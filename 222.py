@@ -11,6 +11,7 @@ app.setStyleSheet("""
 
 
 
+
         }
         QPushButton
         {
@@ -24,7 +25,12 @@ app.setStyleSheet("""
             min-width: 6em;
             padding: 6px;
             font-size: 15px;
-        }
+        }            
+            QPushButton:hover {
+                background-color: #3edb00 ;
+                border-color: green;
+                color: black;
+            }
         QListWidget
         {
             font-size: 20px;
