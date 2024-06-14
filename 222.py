@@ -1,4 +1,8 @@
+import os
+
 from PyQt5.QtWidgets import *
+
+
 
 app = QApplication([])
 window = QWidget()
@@ -80,6 +84,35 @@ h2.addWidget(right_btn)
 h2.addWidget(dzerela_btn)
 h2.addWidget(Rizkist_btn)
 h2.addWidget(C_B_btn)
+
+
+
+def open_directory():
+    folder = QFileDialog.getExistingDirectory()
+    files = os.listdir(folder)
+    for file in files:
+        image_extensions = ('.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff')
+        if file.endswith(".png"):
+            list_png.addItem(file)
+        if file.endswith(".jpeg"):
+            list_png.addItem(file)
+        if file.endswith(".jpg"):
+            list_png.addItem(file)
+        if file.endswith(".gif"):
+            list_png.addItem(file)
+        if file.endswith(".bmp"):
+            list_png.addItem(file)
+        if file.endswith('.tiff'):
+            list_png.addItem(file)
+
+
+
+
+
+
+
+data_btn.clicked.connect(open_directory)
+
 
 
 window.setLayout(main_line)
