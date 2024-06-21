@@ -3,7 +3,8 @@ from PIL.ImageFilter import *
 from PyQt5.QtGui import QPixmap, QImage
 from PIL import Image
 from PyQt5.QtWidgets import *
-
+from PIL import ImageFilter
+from PIL import ImageEnhance
 
 
 
@@ -81,6 +82,12 @@ left_btn = QPushButton("Вліво")
 right_btn = QPushButton("Вправо")
 dzerela_btn = QPushButton("Джерела")
 Rizkist_btn = QPushButton("Різкість")
+mirror_btn = QPushButton("Віддзеркалення")
+saturation_btn = QPushButton("Насиченність")
+Smooth_btn = QPushButton("Згладити")
+Brightness_btn = QPushButton("Яскравість")
+Blur_btn = QPushButton("Блюр")
+Counture_btn = QPushButton("Контури")
 C_B_btn = QPushButton("Ч/Б")
 list_png = QListWidget()
 pic = QLabel('Picture')
@@ -90,6 +97,7 @@ v1 = QVBoxLayout()
 v2 = QVBoxLayout()
 h1 = QHBoxLayout()
 h2 = QHBoxLayout()
+h3 = QHBoxLayout()
 
 main_line.addLayout(v1)
 v1.addWidget(data_btn)
@@ -100,9 +108,16 @@ v2.addWidget(pic)
 v2.addLayout(h2)
 h2.addWidget(left_btn)
 h2.addWidget(right_btn)
+h2.addWidget(mirror_btn)
+h2.addWidget(Brightness_btn)
 h2.addWidget(dzerela_btn)
-h2.addWidget(Rizkist_btn)
-h2.addWidget(C_B_btn)
+v2.addLayout(h3)
+h3.addWidget(Rizkist_btn)
+h3.addWidget(Smooth_btn)
+h3.addWidget(Counture_btn)
+h3.addWidget(Blur_btn)
+h3.addWidget(saturation_btn)
+h3.addWidget(C_B_btn)
 
 
 
@@ -119,6 +134,39 @@ class ImageProcessor:
     def image_show(self):
         pixel = pil2pixmap(self.image)
         pic.setPixmap(pixel)
+
+
+    def mirror_image(self):
+        self.image = self.image.transpose(Image.FLIP_LEFT_RIGHT)
+        self.image_show()
+
+    def saturation_image(self):
+        self.image = ImageEnhance.Color(self.image).enhance(1.5)
+        self.image_show()
+
+    def smooth_image(self):
+        self.image = self.image.filter(ImageFilter.SMOOTH)
+        self.image_show()
+
+    def Black_and_white_image(self):
+        self.image = self.image.convert("L")
+        self.image_show()
+
+    def Rizkisty_image(self):
+        self.image = self.image.filter(ImageFilter.SHARPEN)
+        self.image_show()
+
+    def Brightness_image(self):
+
+        self.image = ImageEnhance.Brightness(self.image).enhance(1.5)
+        self.image_show()
+
+    def BLUR_image(self):
+        self.image = self.image.filter(ImageFilter.BLUR)
+        self.image_show()
+    def Counture_image(self):
+        self.image = self.image.filter(ImageFilter.CONTOUR)
+        self.image_show()
 
 image_processor = ImageProcessor()
 
@@ -157,6 +205,16 @@ list_png.currentRowChanged.connect(show_chosen_image)
 
 
 data_btn.clicked.connect(open_directory)
+
+
+Counture_btn.clicked.connect(image_processor.Counture_image)
+Blur_btn.clicked.connect(image_processor.BLUR_image)
+Brightness_btn.clicked.connect(image_processor.Brightness_image)
+Rizkist_btn.clicked.connect(image_processor.Rizkisty_image)
+C_B_btn.clicked.connect(image_processor.Black_and_white_image)
+mirror_btn.clicked.connect(image_processor.mirror_image)
+saturation_btn.clicked.connect(image_processor.saturation_image)
+Smooth_btn.clicked.connect(image_processor.smooth_image)
 
 
 
