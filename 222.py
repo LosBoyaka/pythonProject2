@@ -141,7 +141,8 @@ class ImageProcessor:
         self.image_show()
 
     def saturation_image(self):
-        self.image = ImageEnhance.Color(self.image).enhance(1.5)
+        num2, ok = QInputDialog.getText(window, "Значення", "Надайте значення")
+        self.image = ImageEnhance.Color(self.image).enhance(float(num2))
         self.image_show()
 
     def smooth_image(self):
@@ -157,8 +158,8 @@ class ImageProcessor:
         self.image_show()
 
     def Brightness_image(self):
-
-        self.image = ImageEnhance.Brightness(self.image).enhance(1.5)
+        num1, ok = QInputDialog.getText(window, "Значення", "Надайте значення")
+        self.image = ImageEnhance.Brightness(self.image).enhance(float(num1))
         self.image_show()
 
     def BLUR_image(self):
