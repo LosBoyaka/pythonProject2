@@ -1,11 +1,30 @@
 import os
-
+from PIL.ImageFilter import *
+from PyQt5.QtGui import QPixmap, QImage
+from PIL import Image
 from PyQt5.QtWidgets import *
 
 
 
+
+def pil2pixmap(im):
+    if im.mode == "RGB":
+        r, g, b = im.split()
+        im = Image.merge("RGB", (b, g, r))
+    elif  im.mode == "RGBA":
+        r, g, b, a = im.split()
+        im = Image.merge("RGBA", (b, g, r, a))
+    elif im.mode == "L":
+        im = im.convert("RGBA")
+    im2 = im.convert("RGBA")
+    data = im2.tobytes("raw", "RGBA")
+    qim = QImage(data, im.size[0], im.size[1], QImage.Format_ARGB32)
+    pixmap = QPixmap.fromImage(qim)
+    return pixmap
+
 app = QApplication([])
 window = QWidget()
+window.resize(800, 600)
 app.setStyleSheet("""
 
 
@@ -87,11 +106,29 @@ h2.addWidget(C_B_btn)
 
 
 
+class ImageProcessor:
+    def __init__(self):
+        self.folder = None
+        self.image = None
+        self.filename = None
+
+    def picture_load(self):
+        image_path = os.path.join(self.folder, self.filename)
+        self.image = Image.open(image_path)
+
+    def image_show(self):
+        pixel = pil2pixmap(self.image)
+        pic.setPixmap(pixel)
+
+image_processor = ImageProcessor()
+
+
 def open_directory():
     folder = QFileDialog.getExistingDirectory()
+    image_processor.folder = folder
     files = os.listdir(folder)
     for file in files:
-        image_extensions = ('.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff')
+        image_extensions = ('.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.jfif')
         if file.endswith(".png"):
             list_png.addItem(file)
         if file.endswith(".jpeg"):
@@ -104,8 +141,16 @@ def open_directory():
             list_png.addItem(file)
         if file.endswith('.tiff'):
             list_png.addItem(file)
+        if file.endswith('.jfif'):
+            list_png.addItem(file)
+
+def show_chosen_image():
+    image_processor.filename = list_png.currentItem().text()
+    image_processor.picture_load()
+    image_processor.image_show()
 
 
+list_png.currentRowChanged.connect(show_chosen_image)
 
 
 
