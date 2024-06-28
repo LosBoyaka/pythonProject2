@@ -31,7 +31,7 @@ app.setStyleSheet("""
 
         QWidget
         {
-        background-color: #FFC55A;
+        background-color: #969696;
 
 
 
@@ -39,9 +39,9 @@ app.setStyleSheet("""
         }
         QPushButton
         {
-            background-color: #FC4100;
-            border-color: brown;
-            color: white;
+            background-color: #ffffff;
+            border-color: grey;
+            color: black;
             border-style: groove;
             border-width: 5px;
             border-radius: 7px;
@@ -59,12 +59,12 @@ app.setStyleSheet("""
         {
             font-size: 20px;
             font-style: oblique;
-            color: white;
+            color: black;
             font-family: "Times New Roman", Times, serif;
-            background-color: #577B8D;
+            background-color: #ffffff;
             border-style: groove;
             border-width: 5px;
-            border-color: blue;
+            border-color: grey;
             border-radius: 7px;
         }
         QLabel
@@ -88,10 +88,11 @@ Smooth_btn = QPushButton("Згладити")
 Brightness_btn = QPushButton("Яскравість")
 Blur_btn = QPushButton("Блюр")
 Counture_btn = QPushButton("Контури")
+Theme_btn1 = QPushButton("Світла тема")
+Theme_btn2 = QPushButton("Темна тема")
 C_B_btn = QPushButton("Ч/Б")
 list_png = QListWidget()
 pic = QLabel('Picture')
-
 main_line = QHBoxLayout()
 v1 = QVBoxLayout()
 v2 = QVBoxLayout()
@@ -102,6 +103,8 @@ h3 = QHBoxLayout()
 main_line.addLayout(v1)
 v1.addWidget(data_btn)
 v1.addWidget(list_png)
+v1.addWidget(Theme_btn1)
+v1.addWidget(Theme_btn2)
 v1.addLayout(h1)
 main_line.addLayout(v2)
 v2.addWidget(pic)
@@ -169,8 +172,119 @@ class ImageProcessor:
         self.image = self.image.filter(ImageFilter.CONTOUR)
         self.image_show()
 
+    def right_locate_fun(self):
+        self.image = self.image.transpose(Image.ROTATE_90)
+        self.image_show()
+    def left_locate_fun(self):
+        self.image = self.image.transpose(Image.ROTATE_270)
+        self.image_show()
 image_processor = ImageProcessor()
 
+
+def Switch_Theme_1():
+    app.setStyleSheet("""
+
+
+            QWidget
+            {
+            background-color: #969696;
+
+
+
+
+            }
+            QPushButton
+            {
+                background-color: #ffffff;
+                border-color: grey;
+                color: black;
+                border-style: groove;
+                border-width: 5px;
+                border-radius: 7px;
+                font-family: "Times New Roman", Times, serif;
+                min-width: 6em;
+                padding: 6px;
+                font-size: 15px;
+            }            
+                QPushButton:hover {
+                    background-color: #3edb00 ;
+                    border-color: green;
+                    color: black;
+                }
+            QListWidget
+            {
+                font-size: 20px;
+                font-style: oblique;
+                color: black;
+                font-family: "Times New Roman", Times, serif;
+                background-color: #ffffff;
+                border-style: groove;
+                border-width: 5px;
+                border-color: grey;
+                border-radius: 7px;
+            }
+            QLabel
+            {
+                background-color: #ffffff;
+                font-size: 15px;
+                font-style: oblique;
+                font-family: "Times New Roman", Times, serif;
+
+            }
+        """)
+
+
+def Switch_Theme_2():
+    app.setStyleSheet("""
+
+
+            QWidget
+            {
+            background-color: #232324;
+
+
+
+
+            }
+            QPushButton
+            {
+                background-color: #242426;
+                border-color: black;
+                color: white;
+                border-style: groove;
+                border-width: 5px;
+                border-radius: 7px;
+                font-family: "Times New Roman", Times, serif;
+                min-width: 6em;
+                padding: 6px;
+                font-size: 15px;
+            }            
+                QPushButton:hover {
+                    background-color: #bfbfbf ;
+                    border-color: gray;
+                    color: black;
+                }
+            QListWidget
+            {
+                font-size: 20px;
+                font-style: oblique;
+                color: white;
+                font-family: "Times New Roman", Times, serif;
+                background-color: #212121;
+                border-style: groove;
+                border-width: 5px;
+                border-color: black;
+                border-radius: 7px;
+            }
+            QLabel
+            {
+                background-color: #ffffff;
+                font-size: 15px;
+                font-style: oblique;
+                font-family: "Times New Roman", Times, serif;
+
+            }
+        """)
 
 def open_directory():
     folder = QFileDialog.getExistingDirectory()
@@ -202,9 +316,6 @@ def new_image():
     image_processor.picture_load()
     image_processor.image_show()
 
-
-
-
 list_png.currentRowChanged.connect(show_chosen_image)
 
 
@@ -214,6 +325,10 @@ list_png.currentRowChanged.connect(show_chosen_image)
 data_btn.clicked.connect(open_directory)
 
 
+right_btn.clicked.connect(image_processor.right_locate_fun)
+left_btn.clicked.connect(image_processor.left_locate_fun)
+Theme_btn1.clicked.connect(Switch_Theme_1)
+Theme_btn2.clicked.connect(Switch_Theme_2)
 Counture_btn.clicked.connect(image_processor.Counture_image)
 Blur_btn.clicked.connect(image_processor.BLUR_image)
 Brightness_btn.clicked.connect(image_processor.Brightness_image)
