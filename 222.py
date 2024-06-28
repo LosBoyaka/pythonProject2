@@ -197,6 +197,12 @@ def show_chosen_image():
     image_processor.filename = list_png.currentItem().text()
     image_processor.picture_load()
     image_processor.image_show()
+def new_image():
+    image_processor.filename = list_png.currentItem().text()
+    image_processor.picture_load()
+    image_processor.image_show()
+
+
 
 
 list_png.currentRowChanged.connect(show_chosen_image)
